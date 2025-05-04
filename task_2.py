@@ -10,7 +10,7 @@ print(df.head())
 tree = OOBTree()
 dictionary  = {}
 
-# Функція для додавання товару
+# Функція для додавання товару до tree
 def add_item_to_tree(tree, price, item):
     if price in tree:
         tree[price].append(item)
@@ -40,7 +40,7 @@ for _, row in df.iterrows():
 print(tree[320.07])   
 print(dictionary[1]) 
 
-# Функція пошуку товарів у визначеному діапазоні цін для BTrees
+# Функція пошуку товарів у визначеному діапазоні цін для trees
 def range_query_tree(tree, lower_border, upper_border):
     results = {}
 
