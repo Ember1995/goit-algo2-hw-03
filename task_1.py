@@ -25,7 +25,7 @@ edges = [
 
 G.add_weighted_edges_from(edges)
 
-# Позиції на основі картинки
+# Позиції для зображення
 pos = {
     0: (0, 2),  # Термінал 1
     1: (0, 1),  # Термінал 2
@@ -134,39 +134,13 @@ capacity_matrix = [
     [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,   0,  0,  0,  0,  0]   # Магазин 14
 ]
 
-flow_data = []  # для DataFrame
 readme_text += "## Потоки між терміналами і магазинами:\n\n| Термінал | Магазин | Потік (одиниць) |\n|----------|---------|------------------|\n"
 
 for terminal in [0, 1]:
     for store in range(6, 20):
         max_flow = edmonds_karp(capacity_matrix, terminal, store)
         readme_text += f"| Термінал {terminal+1} | Магазин {store-5} | {max_flow} |\n"
-        flow_data.append({
-            "Термінал": f"Термінал {terminal+1}",
-            "Магазин": f"Магазин {store-5}",
-            "Потік": max_flow
-        })
 
 # Зберігаємо таблицю в readme
-with open("README_task1.md", "w", encoding="utf-8") as f:
-    f.write(readme_text)
-
-# Створюємо DataFrame для подальшого аналізу
-df = pd.DataFrame(flow_data)
-
-# Створюємо зведену таблицю та сортуємо
-pivot = df.groupby("Магазин")["Потік"].max().reset_index()
-pivot = pivot.rename(columns={"Потік": "MAX of Потік"})
-pivot = pivot.sort_values(by="MAX of Потік", ascending=False)
-
-# Додаємо заголовок для зведеної таблиці
-readme_text += "\n## Зведена таблиця: Максимальний потік до кожного магазину\n\n"
-readme_text += "| Магазин | MAX of Потік |\n"
-readme_text += "|---------|---------------|\n"
-
-# Додаємо до readme
-for _, row in pivot.iterrows():
-    readme_text += f"| {row['Магазин']} | {row['MAX of Потік']} |\n"
-
 with open("README_task1.md", "w", encoding="utf-8") as f:
     f.write(readme_text)
